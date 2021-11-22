@@ -29,6 +29,7 @@ function Login() {
         if (response.data.success) {
           setHasError(false);
           setError(null);
+          localStorage.setItem("userType", response.data.data.type);
           history.push("/inventory");
         } else {
           setHasError(true);

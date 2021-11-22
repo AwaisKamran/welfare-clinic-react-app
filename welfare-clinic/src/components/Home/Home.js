@@ -107,7 +107,8 @@ function Home({ refresh, loadInventory = (f) => f }) {
       title: "",
       dataIndex: "operation",
       render: (_, record) => {
-        return (
+        const type = localStorage.getItem("userType");
+        return type === "owner" ? (
           <center>
             <Typography.Link
               className="edit"
@@ -116,10 +117,21 @@ function Home({ refresh, loadInventory = (f) => f }) {
               <span class="material-icons">edit</span>
             </Typography.Link>
           </center>
+        ) : (
+          <center>
+            <Typography.Link
+              className="edit"
+              onClick={() => handleMedicineDispenseOperation(record)}
+            >
+              <span class="material-icons">healing</span>
+            </Typography.Link>
+          </center>
         );
       },
     },
   ];
+
+  function handleMedicineDispenseOperation() {}
 
   function handleMedicineEditoperation({ id, quantity }) {
     setMedicineToBeUpdated(id);

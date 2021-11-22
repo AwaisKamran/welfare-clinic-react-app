@@ -55,6 +55,7 @@ function Header({ loadInventory = (f) => f }) {
   );
 
   const logout = () => {
+    localStorage.removeItem("userType");
     history.push("/");
   };
 
@@ -115,6 +116,7 @@ function Header({ loadInventory = (f) => f }) {
         onBack={() => null}
         title={<HeaderTitle />}
         subTitle="Inventory Details"
+        backIcon={false}
         extra={[
           <span className="add-icon material-icons" onClick={showModal}>
             add
