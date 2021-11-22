@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 import "./Header.css";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import HeaderTitle from "../HeaderTitle/HeaderTitle";
-import { PageHeader, Modal, Input, notification } from "antd";
+import {
+  PageHeader,
+  Modal,
+  Input,
+  notification,
+  Menu,
+  Dropdown,
+  Button,
+} from "antd";
 
 function Header({ loadInventory = (f) => f }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -10,6 +19,8 @@ function Header({ loadInventory = (f) => f }) {
   const [quantity, setQuantity] = useState(0);
   const [fieldError, setFieldError] = useState(false);
   const [fieldErrorMessage, setFieldErrorMessage] = useState(null);
+
+  const history = useHistory();
 
   useEffect(() => {
     if (quantity > 0 && medicineName) {
@@ -33,6 +44,18 @@ function Header({ loadInventory = (f) => f }) {
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <span onClick={() => logout()}>Log Out</span>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const logout = () => {
+    history.push("/");
   };
 
   const handleOk = () => {
@@ -96,6 +119,9 @@ function Header({ loadInventory = (f) => f }) {
           <span className="add-icon material-icons" onClick={showModal}>
             add
           </span>,
+          <Dropdown overlay={menu} placement="bottomCenter">
+            <span className="account-icon material-icons">account_circle</span>
+          </Dropdown>,
         ]}
       />
 
@@ -127,7 +153,7 @@ function Header({ loadInventory = (f) => f }) {
           type="number"
           placeholder="Enter Minimum Threshold"
         />
-        
+
         {fieldError && <div className="error-message">{fieldErrorMessage}</div>}
       </Modal>
     </div>

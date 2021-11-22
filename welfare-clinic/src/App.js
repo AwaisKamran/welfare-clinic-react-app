@@ -21,7 +21,7 @@ function App() {
           <Route exact path="/inventory">
             <Home loadInventory={loadInventory} refresh={refresh} />
           </Route>
-          <Route exact path="/login">
+          <Route exact path="/">
             <Login />
           </Route>
         </Switch>
