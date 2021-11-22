@@ -1,0 +1,9 @@
+.title-container {
+  display: flex;
+}
+
+.title-icon {
+  margin-top: 4px;
+  margin-right: 2px;
+  color: #f44336;
+}

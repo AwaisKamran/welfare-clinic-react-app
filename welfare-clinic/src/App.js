@@ -1,19 +1,31 @@
-import logo from "./logo.svg";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./components/Home/Home";
+import Login from "./components/Login/Login";
+
+import "antd/dist/antd.css";
 import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const [refresh, setRefresh] = useState(false);
+
+  const loadInventory = () => {
+    setRefresh(true);
+    setRefresh(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Route exact path="/inventory">
+            <Home loadInventory={loadInventory} refresh={refresh} />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

@@ -1,13 +1,106 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.ant-pagination-item-active a {
+  color: #f44336 !important;
+}
+
+.ant-pagination-item-active {
+  border-color: #f44336 !important;
+}
+
+.ant-btn-primary {
+  border-color: #f44336 !important;
+  background: #f44336 !important;
+}
+
+.ant-table-column-sorter-up.active,
+.ant-table-column-sorter-down.active {
+  color: #f44336 !important;
+}
+
+input:hover,
+input:active,
+input:focus {
+  border-color: #f44336 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-right-width: 0 !important;
+}
+
+.ant-page-header-heading-sub-title {
+  margin-top: 1px;
+}
+
+.ant-btn:disabled {
+  border-color: #e0e0e0 !important;
+  color: gray !important;
+  background-color: #e0e0e0 !important;
+}
+.ant-btn:disabled:hover {
+  border-color: #e0e0e0 !important;
+  color: gray !important;
+  background-color: #e0e0e0 !important;
+}
+
+.ant-btn:hover,
+.ant-btn:active,
+.ant-btn:focus {
+  border-color: #f44336 !important;
+  color: white !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  border-color: #f44336 !important;
+  color: #f44336 !important;
+  background: #f44336 !important;
+}
+
+.ant-dropdown-menu-item-selected,
+.ant-dropdown-menu-submenu-title-selected {
+  color: #f44336 !important;
+}
+
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-submenu-title:hover {
+  background-color: #f1dedc !important;
+}
+
+.ant-btn-link {
+  color: #f44336 !important;
+}
+
+.ant-table-filter-trigger.active {
+  color: #f44336 !important;
+}
+
+.ant-btn-sm:hover {
+  color: #f44336 !important;
+}
+
+.ant-pagination-item:hover,
+.ant-pagination-item > a:hover {
+  border-color: #f44336 !important;
+  color: #f44336 !important;
+}
+
+.ant-pagination-item-link:hover {
+  border-color: #f44336 !important;
+  color: #f44336 !important;
+}
+
+.ant-select:hover,
+.ant-select-selector:hover {
+  border-color: #f44336 !important;
 }

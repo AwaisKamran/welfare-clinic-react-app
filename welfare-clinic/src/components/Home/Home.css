@@ -1,0 +1,27 @@
+.home-container {
+  padding: 20px;
+  padding-top: 0px !important;
+}
+
+.search-dropdown {
+  margin-top: 18px !important;
+  margin-bottom: 32px !important;
+  margin-right: 8px !important;
+}
+
+.filter-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.icon-button {
+  margin-top: 18px;
+}
+
+.edit {
+  color: #f44336 !important;
+}
+
+.error-message {
+  color: red;
+}

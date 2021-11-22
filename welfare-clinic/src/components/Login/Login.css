@@ -1,0 +1,36 @@
+.field {
+  width: 100%;
+}
+
+.login-container {
+  padding: 10px;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-title-container {
+  display: flex;
+  margin-bottom: 20px;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.login-title-icon {
+  font-size: 40px;
+  color: #f44336;
+}
+
+.login-title-text {
+  margin-top: 2px;
+  font-size: 28px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.login-block {
+  border: 1px solid #e0e0e0;
+  padding: 30px;
+  width: 485px;
+}
