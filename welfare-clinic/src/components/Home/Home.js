@@ -235,7 +235,8 @@ function Home({ refresh, loadInventory = (f) => f }) {
     setIsDispensable(true);
     const value = event.target.value;
     const newValue = parseInt(currentQuantity) - parseInt(value);
-    if ((value > 0 && value <= currentQuantity) && newValue >= 0) {
+
+    if ((value > 0 && value <= parseInt(currentQuantity)) && newValue >= 0) {
       setFieldError(false);
       setFieldErrorMessage(null);
       setStockQuantity(value);
