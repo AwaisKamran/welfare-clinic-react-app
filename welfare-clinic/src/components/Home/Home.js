@@ -20,11 +20,13 @@ function Home({ refresh, loadInventory = (f) => f }) {
   const [loading, setLoading] = useState(false);
   const [medicineFilter, setMedicineFilter] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDispenseModalVisible, setIsDispenseModalVisible] = useState(false);
 
   const [currentQuantity, setCurrentQuantity] = useState(0);
   const [stockQuantity, setStockQuantity] = useState(0);
   const [newQuantity, setNewQuantity] = useState(0);
   const [medicineToBeUpdated, setMedicineToBeUpdated] = useState(null);
+  const [isDispensable, setIsDispensable] = useState(false);
 
   const [fieldError, setFieldError] = useState(false);
   const [fieldErrorMessage, setFieldErrorMessage] = useState(null);
@@ -131,7 +133,11 @@ function Home({ refresh, loadInventory = (f) => f }) {
     },
   ];
 
-  function handleMedicineDispenseOperation() {}
+  function handleMedicineDispenseOperation({ id, quantity }) {
+    setMedicineToBeUpdated(id);
+    setCurrentQuantity(quantity);
+    setIsDispenseModalVisible(true);
+  }
 
   function handleMedicineEditoperation({ id, quantity }) {
     setMedicineToBeUpdated(id);
@@ -165,17 +171,19 @@ function Home({ refresh, loadInventory = (f) => f }) {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsDispenseModalVisible(false);
     setStockQuantity(0);
     setCurrentQuantity(0);
     setNewQuantity(0);
     setMedicineToBeUpdated(null);
+    setIsDispensable(false);
   };
 
   const handleOk = () => {
     let request = {
       data: {
         id: medicineToBeUpdated,
-        quantity: stockQuantity,
+        quantity: isDispensable ? stockQuantity * -1 : stockQuantity,
       },
     };
 
@@ -198,13 +206,16 @@ function Home({ refresh, loadInventory = (f) => f }) {
       });
 
     setIsModalVisible(false);
+    setIsDispenseModalVisible(false);
     setStockQuantity(0);
     setCurrentQuantity(0);
     setNewQuantity(0);
     setMedicineToBeUpdated(null);
+    setIsDispensable(false);
   };
 
   const handleStockQuantity = (event) => {
+    setIsDispensable(false);
     const value = event.target.value;
     if (value > 0) {
       setFieldError(false);
@@ -216,6 +227,23 @@ function Home({ refresh, loadInventory = (f) => f }) {
       setFieldError(true);
       setFieldErrorMessage(
         "Please enter the stock quantity greater than zero."
+      );
+    }
+  };
+
+  const handleDispenseQuantity = (event) => {
+    setIsDispensable(true);
+    const value = event.target.value;
+    const newValue = parseInt(currentQuantity) - parseInt(value);
+    if ((value > 0 && value <= currentQuantity) && newValue >= 0) {
+      setFieldError(false);
+      setFieldErrorMessage(null);
+      setStockQuantity(value);
+      setNewQuantity(newValue);
+    } else {
+      setFieldError(true);
+      setFieldErrorMessage(
+        "Please enter the dispensed quantity greater than zero and lesser than current quantity."
       );
     }
   };
@@ -291,6 +319,45 @@ function Home({ refresh, loadInventory = (f) => f }) {
           placeholder="Stocked Quantity"
           addonBefore="Stocked Quantity"
           onChange={(event) => handleStockQuantity(event)}
+        />
+
+        <Input
+          className="field"
+          type="number"
+          placeholder="Updated Quantity"
+          addonBefore="Updated Quantity"
+          value={newQuantity}
+          disabled
+        />
+
+        {fieldError && <div className="error-message">{fieldErrorMessage}</div>}
+      </Modal>
+
+      <Modal
+        title="Dispense Medicine Quantity"
+        visible={isDispenseModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        maskClosable={false}
+        destroyOnClose={true}
+        okButtonProps={{ disabled: fieldError }}
+      >
+        <Input
+          type="number"
+          className="field"
+          placeholder="Current Quantity"
+          addonBefore="Current Quantity"
+          value={currentQuantity}
+          disabled
+        />
+
+        <Input
+          className="field"
+          type="number"
+          min="0"
+          placeholder="Dispensed Quantity"
+          addonBefore="Dispensed Quantity"
+          onChange={(event) => handleDispenseQuantity(event)}
         />
 
         <Input

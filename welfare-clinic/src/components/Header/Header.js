@@ -118,9 +118,11 @@ function Header({ loadInventory = (f) => f }) {
         subTitle="Inventory Details"
         backIcon={false}
         extra={[
-          <span className="add-icon material-icons" onClick={showModal}>
-            add
-          </span>,
+          localStorage.getItem("userType") === "owner" ? (
+            <span className="add-icon material-icons" onClick={showModal}>
+              add
+            </span>
+          ) : null,
           <Dropdown overlay={menu} placement="bottomCenter">
             <span className="account-icon material-icons">account_circle</span>
           </Dropdown>,
