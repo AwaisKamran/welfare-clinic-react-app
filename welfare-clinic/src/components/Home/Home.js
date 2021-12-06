@@ -19,6 +19,7 @@ function Home({ refresh, loadInventory = (f) => f }) {
   const [medicinesData, setMedicinesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [medicineFilter, setMedicineFilter] = useState(null);
+  const [medicineTypeFilter, setMedicineTypeFilter] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDispenseModalVisible, setIsDispenseModalVisible] = useState(false);
 
@@ -56,6 +57,18 @@ function Home({ refresh, loadInventory = (f) => f }) {
       });
   }
 
+  const medicinesTypes = [
+    "Tablet",
+    "Solution",
+    "Syrup",
+    "Capsule",
+    "Drip",
+    "Pack",
+    "Injection",
+    "Suspension",
+    "Cream",
+  ];
+
   const columns = [
     {
       title: "Name",
@@ -79,6 +92,11 @@ function Home({ refresh, loadInventory = (f) => f }) {
           children: <div>{text}</div>,
         };
       },
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      defaultSortOrder: "descend",
     },
     {
       title: "Brand",
@@ -149,10 +167,22 @@ function Home({ refresh, loadInventory = (f) => f }) {
     setMedicineFilter(name);
   }
 
+  function handleMedicineTypeChange(name) {
+    setMedicineTypeFilter(name);
+  }
+
   function handleFilter() {
-    if (medicineFilter) {
+    if (medicineFilter || medicineTypeFilter) {
       let data = [...medicines];
-      data = data.filter((item) => item.name === medicineFilter);
+
+      if (medicineFilter) {
+        data = data.filter((item) => item.name === medicineFilter);
+      }
+
+      if (medicineTypeFilter) {
+        data = data.filter((item) => item.type === medicineTypeFilter);
+      }
+
       setMedicinesData(data);
     } else {
       setLoading(true);
@@ -236,7 +266,7 @@ function Home({ refresh, loadInventory = (f) => f }) {
     const value = event.target.value;
     const newValue = parseInt(currentQuantity) - parseInt(value);
 
-    if ((value > 0 && value <= parseInt(currentQuantity)) && newValue >= 0) {
+    if (value > 0 && value <= parseInt(currentQuantity) && newValue >= 0) {
       setFieldError(false);
       setFieldErrorMessage(null);
       setStockQuantity(value);
@@ -275,15 +305,15 @@ function Home({ refresh, loadInventory = (f) => f }) {
           placeholder="Select Medicine Type"
           optionFilterProp="children"
           className="search-dropdown"
+          onChange={handleMedicineTypeChange}
           filterOption={(input, option) =>
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
           allowClear
-          disabled
         >
-          {medicines.map((type, index) => (
-            <Option key={index} value={type.name}>
-              {type.name}
+          {medicinesTypes.map((name, index) => (
+            <Option key={index} value={name}>
+              {name}
             </Option>
           ))}
         </Select>
