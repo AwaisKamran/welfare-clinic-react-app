@@ -14,7 +14,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 const { Option } = Select;
 
-function Home({ refresh, loadInventory = (f) => f }) {
+function Home() {
   const [medicines, setMedicines] = useState([]);
   const [medicinesData, setMedicinesData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,11 +33,9 @@ function Home({ refresh, loadInventory = (f) => f }) {
   const [fieldErrorMessage, setFieldErrorMessage] = useState(null);
 
   useEffect(() => {
-    if (refresh) {
-      setLoading(true);
-      fetchMedicines();
-    }
-  }, [refresh]);
+    setLoading(true);
+    fetchMedicines();
+  }, []);
 
   function fetchMedicines() {
     axios
@@ -291,7 +289,7 @@ function Home({ refresh, loadInventory = (f) => f }) {
 
   return (
     <div className="home-container">
-      <Header loadInventory={loadInventory} />
+      <Header loadInventory={fetchMedicines} />
 
       <div className="filter-container">
         <Select

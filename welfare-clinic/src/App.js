@@ -7,23 +7,12 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [refresh, setRefresh] = useState(false);
-
-  const loadInventory = () => {
-    setRefresh(true);
-    setRefresh(false);
-  };
-
-  useEffect(() => {
-    setRefresh(true);
-  }, []);
-
   return (
     <div className="App">
       <Router>
         <Switch>
           <Route exact path="/inventory">
-            <Home loadInventory={loadInventory} refresh={refresh} />
+            <Home />
           </Route>
           <Route exact path="/">
             <Login />
