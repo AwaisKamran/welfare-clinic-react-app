@@ -4,7 +4,7 @@ import Login from "./components/Login/Login";
 
 import "antd/dist/antd.css";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [refresh, setRefresh] = useState(false);
@@ -13,6 +13,10 @@ function App() {
     setRefresh(true);
     setRefresh(false);
   };
+
+  useEffect(() => {
+    setRefresh(true);
+  }, []);
 
   return (
     <div className="App">
