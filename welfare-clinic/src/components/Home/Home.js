@@ -49,8 +49,8 @@ function Home({ refresh, loadInventory = (f) => f }) {
           ...item,
           brand: item.brand || "None",
           company: item.company || "None",
-          updatedBy: item.updatedBy || "None",
-          updatedAt: item.updatedAt || "None",
+          updatedBy: item.quantityUpdatedBy || "None",
+          updatedAt: item.quantityUpdatedAt || "None",
         }));
         setMedicines(data);
         setMedicinesData(data);
@@ -214,6 +214,7 @@ function Home({ refresh, loadInventory = (f) => f }) {
       data: {
         id: medicineToBeUpdated,
         quantity: isDispensable ? stockQuantity * -1 : stockQuantity,
+        quantityUpdatedBy: localStorage.getItem("userType"),
       },
     };
 

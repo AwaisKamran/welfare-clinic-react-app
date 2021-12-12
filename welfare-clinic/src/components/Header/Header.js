@@ -10,17 +10,22 @@ import {
   notification,
   Menu,
   Dropdown,
-  Button,
+  Select,
 } from "antd";
 
 function Header({ loadInventory = (f) => f }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [medicineName, setMedicineName] = useState(null);
+  const [brandName, setBrandName] = useState(null);
+  const [companyName, setCompanyName] = useState(null);
+  const [medicineType, setMedicineType] = useState(null);
   const [quantity, setQuantity] = useState(0);
   const [fieldError, setFieldError] = useState(false);
   const [fieldErrorMessage, setFieldErrorMessage] = useState(null);
 
   const history = useHistory();
+
+  const { Option } = Select;
 
   useEffect(() => {
     if (quantity > 0 && medicineName) {
@@ -46,6 +51,18 @@ function Header({ loadInventory = (f) => f }) {
     setIsModalVisible(true);
   };
 
+  const medicinesTypes = [
+    "Tablet",
+    "Solution",
+    "Syrup",
+    "Capsule",
+    "Drip",
+    "Pack",
+    "Injection",
+    "Suspension",
+    "Cream",
+  ];
+
   const menu = (
     <Menu>
       <Menu.Item>
@@ -68,7 +85,10 @@ function Header({ loadInventory = (f) => f }) {
         data: {
           name: medicineName,
           quantity: quantity,
-          type: "Local Inventory",
+          quantityUpdatedBy: localStorage.getItem("userType"),
+          brand: brandName,
+          company: companyName,
+          type: medicineType,
         },
       };
 
@@ -107,6 +127,18 @@ function Header({ loadInventory = (f) => f }) {
 
   const handleQuantity = (event) => {
     setQuantity(event.target.value);
+  };
+
+  const handleBrandName = (event) => {
+    setBrandName(event.target.value);
+  };
+
+  const handleCompanyName = (event) => {
+    setCompanyName(event.target.value);
+  };
+
+  const handleMedicineType = (event) => {
+    setMedicineType(event.target.value);
   };
 
   return (
@@ -157,6 +189,39 @@ function Header({ loadInventory = (f) => f }) {
           type="number"
           placeholder="Enter Minimum Threshold"
         />
+
+        <Input
+          onChange={(event) => handleBrandName(event)}
+          className="field"
+          type="text"
+          placeholder="Enter Brand Name"
+        />
+
+        <Input
+          onChange={(event) => handleCompanyName(event)}
+          className="field"
+          type="text"
+          placeholder="Enter Company Name"
+        />
+
+        <Select
+          showSearch
+          style={{ width: 200 }}
+          placeholder="Select Medicine Type"
+          optionFilterProp="children"
+          className="field"
+          onChange={(event) => handleMedicineType(event)}
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          allowClear
+        >
+          {medicinesTypes.map((name, index) => (
+            <Option key={index} value={name}>
+              {name}
+            </Option>
+          ))}
+        </Select>
 
         {fieldError && <div className="error-message">{fieldErrorMessage}</div>}
       </Modal>
