@@ -33,8 +33,10 @@ function Home({ refresh, loadInventory = (f) => f }) {
   const [fieldErrorMessage, setFieldErrorMessage] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetchMedicines();
+    if (refresh) {
+      setLoading(true);
+      fetchMedicines();
+    }
   }, [refresh]);
 
   function fetchMedicines() {

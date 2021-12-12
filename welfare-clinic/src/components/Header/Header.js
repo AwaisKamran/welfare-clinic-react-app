@@ -19,6 +19,7 @@ function Header({ loadInventory = (f) => f }) {
   const [brandName, setBrandName] = useState(null);
   const [companyName, setCompanyName] = useState(null);
   const [medicineType, setMedicineType] = useState(null);
+  const [minimumThreshold, setMinimumThreshold] = useState(null);
   const [quantity, setQuantity] = useState(0);
   const [fieldError, setFieldError] = useState(false);
   const [fieldErrorMessage, setFieldErrorMessage] = useState(null);
@@ -85,6 +86,7 @@ function Header({ loadInventory = (f) => f }) {
         data: {
           name: medicineName,
           quantity: quantity,
+          minimumThreshold: minimumThreshold,
           quantityUpdatedBy: localStorage.getItem("userType"),
           brand: brandName,
           company: companyName,
@@ -137,8 +139,12 @@ function Header({ loadInventory = (f) => f }) {
     setCompanyName(event.target.value);
   };
 
-  const handleMedicineType = (event) => {
-    setMedicineType(event.target.value);
+  const handleMedicineType = (name) => {
+    setMedicineType(name);
+  };
+
+  const handleMinimumThreshold = (event) => {
+    setMinimumThreshold(event.target.value);
   };
 
   return (
@@ -184,7 +190,7 @@ function Header({ loadInventory = (f) => f }) {
         />
 
         <Input
-          onChange={(event) => handleQuantity(event)}
+          onChange={(event) => handleMinimumThreshold(event)}
           className="field"
           type="number"
           placeholder="Enter Minimum Threshold"
