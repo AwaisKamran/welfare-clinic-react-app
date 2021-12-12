@@ -133,10 +133,17 @@ function Home({ refresh, loadInventory = (f) => f }) {
         return type === "owner" ? (
           <center>
             <Typography.Link
-              className="edit"
+              className="edit margin-right"
               onClick={() => handleMedicineEditoperation(record)}
             >
               <span class="material-icons">edit</span>
+            </Typography.Link>
+
+            <Typography.Link
+              className="edit"
+              onClick={() => handleMedicineDispenseOperation(record)}
+            >
+              <span class="material-icons">healing</span>
             </Typography.Link>
           </center>
         ) : (
@@ -230,6 +237,7 @@ function Home({ refresh, loadInventory = (f) => f }) {
           "success",
           "Medical Inventory has been updated."
         );
+        fetchMedicines();
       })
       .catch(function (ex) {
         openNotificationWithIcon(
