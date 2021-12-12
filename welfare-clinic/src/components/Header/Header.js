@@ -45,7 +45,6 @@ function Header({ loadInventory = (f) => f }) {
     setIsModalVisible(false);
     setMedicineName(null);
     setQuantity(0);
-    loadInventory();
   };
 
   const showModal = () => {
@@ -104,6 +103,7 @@ function Header({ loadInventory = (f) => f }) {
             "success",
             "Medical Inventory has been added."
           );
+          loadInventory();
         })
         .catch(function (ex) {
           openNotificationWithIcon(

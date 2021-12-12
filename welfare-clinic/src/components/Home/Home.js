@@ -205,7 +205,6 @@ function Home({ refresh, loadInventory = (f) => f }) {
       description: message,
       className: type,
     });
-    loadInventory();
   };
 
   const handleCancel = () => {
