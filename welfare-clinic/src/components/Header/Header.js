@@ -58,6 +58,7 @@ function Header({ loadInventory = (f) => f }) {
     "Capsule",
     "Drip",
     "Pack",
+    "Ear Drop",
     "Injection",
     "Suspension",
     "Cream",

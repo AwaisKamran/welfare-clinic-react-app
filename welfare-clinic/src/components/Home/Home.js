@@ -20,10 +20,19 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [medicineFilter, setMedicineFilter] = useState(null);
   const [medicineTypeFilter, setMedicineTypeFilter] = useState(null);
+  const [brandNameFilter, setBrandNameFilter] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDispenseModalVisible, setIsDispenseModalVisible] = useState(false);
+  const [isMedicineEditModalVisible, setIsMedicineEditModalVisible] = useState(
+    false
+  );
 
   const [currentQuantity, setCurrentQuantity] = useState(0);
+  const [currentCompany, setCurrentCompany] = useState(null);
+  const [currentBrand, setCurrentBrand] = useState(null);
+  const [currentType, setCurrentType] = useState(null);
+  const [currentStrength, setCurrentStrength] = useState(null);
+  const [currentMinimumThreshold, setCurrentMinimumThreshold] = useState(null);
   const [stockQuantity, setStockQuantity] = useState(0);
   const [newQuantity, setNewQuantity] = useState(0);
   const [medicineToBeUpdated, setMedicineToBeUpdated] = useState(null);
@@ -64,6 +73,7 @@ function Home() {
     "Capsule",
     "Drip",
     "Pack",
+    "Ear Drop",
     "Injection",
     "Suspension",
     "Cream",
@@ -94,6 +104,11 @@ function Home() {
       },
     },
     {
+      title: "Strength",
+      dataIndex: "strength",
+      defaultSortOrder: "descend",
+    },
+    {
       title: "Type",
       dataIndex: "type",
       defaultSortOrder: "descend",
@@ -106,6 +121,11 @@ function Home() {
     {
       title: "Company",
       dataIndex: "company",
+      defaultSortOrder: "descend",
+    },
+    {
+      title: "Minimum Threshold",
+      dataIndex: "minimumThreshold",
       defaultSortOrder: "descend",
     },
     {
@@ -132,9 +152,16 @@ function Home() {
           <center>
             <Typography.Link
               className="edit margin-right"
-              onClick={() => handleMedicineEditoperation(record)}
+              onClick={() => handleMedicineFieldEditOperation(record)}
             >
               <span class="material-icons">edit</span>
+            </Typography.Link>
+
+            <Typography.Link
+              className="edit margin-right"
+              onClick={() => handleMedicineEditoperation(record)}
+            >
+              <span class="material-icons">shopping_cart</span>
             </Typography.Link>
 
             <Typography.Link
@@ -170,6 +197,23 @@ function Home() {
     setIsModalVisible(true);
   }
 
+  function handleMedicineFieldEditOperation({
+    id,
+    minimumThreshold,
+    company,
+    brand,
+    type,
+    strength,
+  }) {
+    setMedicineToBeUpdated(id);
+    setCurrentMinimumThreshold(minimumThreshold);
+    setCurrentCompany(company);
+    setCurrentBrand(brand);
+    setCurrentType(type);
+    setCurrentStrength(strength);
+    setIsMedicineEditModalVisible(true);
+  }
+
   function handleMedicineChange(name) {
     setMedicineFilter(name);
   }
@@ -178,8 +222,12 @@ function Home() {
     setMedicineTypeFilter(name);
   }
 
+  function handleBrandNameChange(name) {
+    setBrandNameFilter(name);
+  }
+
   function handleFilter() {
-    if (medicineFilter || medicineTypeFilter) {
+    if (medicineFilter || medicineTypeFilter || brandNameFilter) {
       let data = [...medicines];
 
       if (medicineFilter) {
@@ -188,6 +236,10 @@ function Home() {
 
       if (medicineTypeFilter) {
         data = data.filter((item) => item.type === medicineTypeFilter);
+      }
+
+      if (brandNameFilter) {
+        data = data.filter((item) => item.brand === brandNameFilter);
       }
 
       setMedicinesData(data);
@@ -210,9 +262,61 @@ function Home() {
     setIsDispenseModalVisible(false);
     setStockQuantity(0);
     setCurrentQuantity(0);
+    setCurrentType(null);
+    setCurrentBrand(null);
+    setCurrentCompany(null);
+    setCurrentMinimumThreshold(0);
     setNewQuantity(0);
     setMedicineToBeUpdated(null);
     setIsDispensable(false);
+    setIsMedicineEditModalVisible(false);
+  };
+
+  const handleEditMedicineOk = () => {
+    let request = {
+      data: {
+        id: medicineToBeUpdated,
+        minimumThreshold: currentMinimumThreshold,
+        company: currentCompany,
+        brand: currentBrand,
+        strength: currentStrength,
+        type: currentType,
+      },
+    };
+
+    setLoading(true);
+
+    axios
+      .post(
+        "https://rahatmaqsoodclinic.com/management/api/inventory/updateInventoryById.php",
+        request
+      )
+      .then(function (response) {
+        openNotificationWithIcon(
+          "success",
+          "Medical Inventory has been updated."
+        );
+        fetchMedicines();
+      })
+      .catch(function (ex) {
+        openNotificationWithIcon(
+          "error",
+          "There was an error updating the inventory."
+        );
+      });
+
+    setIsModalVisible(false);
+    setIsDispenseModalVisible(false);
+    setStockQuantity(0);
+    setCurrentQuantity(0);
+    setCurrentType(null);
+    setCurrentBrand(null);
+    setCurrentCompany(null);
+    setCurrentMinimumThreshold(0);
+    setNewQuantity(0);
+    setMedicineToBeUpdated(null);
+    setIsDispensable(false);
+    setIsMedicineEditModalVisible(false);
   };
 
   const handleOk = () => {
@@ -326,6 +430,25 @@ function Home() {
           ))}
         </Select>
 
+        <Select
+          showSearch
+          style={{ width: 200 }}
+          placeholder="Select Brand Name"
+          optionFilterProp="children"
+          className="search-dropdown"
+          onChange={handleBrandNameChange}
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          allowClear
+        >
+          {medicines.map((medicine) => (
+            <Option key={medicine.id} value={medicine.brand}>
+              {medicine.brand}
+            </Option>
+          ))}
+        </Select>
+
         <Button onClick={handleFilter} className="icon-button" type="primary">
           <span className="material-icons">search</span>
         </Button>
@@ -409,6 +532,71 @@ function Home() {
         />
 
         {fieldError && <div className="error-message">{fieldErrorMessage}</div>}
+      </Modal>
+
+      <Modal
+        title="Edit Medicine Fields"
+        visible={isMedicineEditModalVisible}
+        onOk={handleEditMedicineOk}
+        onCancel={handleCancel}
+        maskClosable={false}
+        destroyOnClose={true}
+      >
+        <Input
+          type="number"
+          className="field"
+          placeholder="Minimum Threshold"
+          addonBefore="Minimum Threshold"
+          value={currentMinimumThreshold}
+          onChange={(event) => setCurrentMinimumThreshold(event.target.value)}
+        />
+
+        <Input
+          className="field"
+          type="text"
+          placeholder="Company"
+          addonBefore="Company"
+          value={currentCompany}
+          onChange={(event) => setCurrentCompany(event.target.value)}
+        />
+
+        <Input
+          className="field"
+          type="text"
+          placeholder="Strength"
+          addonBefore="Strength"
+          value={currentStrength}
+          onChange={(event) => setCurrentStrength(event.target.value)}
+        />
+
+        <Input
+          className="field"
+          type="text"
+          placeholder="Brand"
+          addonBefore="Brand"
+          value={currentBrand}
+          onChange={(event) => setCurrentBrand(event.target.value)}
+        />
+
+        <Select
+          showSearch
+          style={{ width: 200 }}
+          placeholder="Select Medicine Type"
+          optionFilterProp="children"
+          className="field"
+          value={currentType}
+          onChange={(event) => setCurrentType(event)}
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          allowClear
+        >
+          {medicinesTypes.map((name, index) => (
+            <Option key={index} value={name}>
+              {name}
+            </Option>
+          ))}
+        </Select>
       </Modal>
 
       <Footer />
