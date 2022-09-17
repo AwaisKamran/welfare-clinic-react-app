@@ -23,9 +23,8 @@ function Home() {
   const [brandNameFilter, setBrandNameFilter] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDispenseModalVisible, setIsDispenseModalVisible] = useState(false);
-  const [isMedicineEditModalVisible, setIsMedicineEditModalVisible] = useState(
-    false
-  );
+  const [isMedicineEditModalVisible, setIsMedicineEditModalVisible] =
+    useState(false);
 
   const [currentQuantity, setCurrentQuantity] = useState(0);
   const [currentCompany, setCurrentCompany] = useState(null);
@@ -148,39 +147,53 @@ function Home() {
       dataIndex: "operation",
       render: (_, record) => {
         const type = localStorage.getItem("userType");
-        return type === "owner" ? (
-          <center>
-            <Typography.Link
-              className="edit margin-right"
-              onClick={() => handleMedicineFieldEditOperation(record)}
-            >
-              <span class="material-icons">edit</span>
-            </Typography.Link>
 
+        if (type === "owner") {
+          return (
+            <center>
+              <Typography.Link
+                className="edit margin-right"
+                onClick={() => handleMedicineFieldEditOperation(record)}
+              >
+                <span class="material-icons">edit</span>
+              </Typography.Link>
+
+              <Typography.Link
+                className="edit margin-right"
+                onClick={() => handleMedicineEditoperation(record)}
+              >
+                <span class="material-icons">shopping_cart</span>
+              </Typography.Link>
+
+              <Typography.Link
+                className="edit"
+                onClick={() => handleMedicineDispenseOperation(record)}
+              >
+                <span class="material-icons">healing</span>
+              </Typography.Link>
+            </center>
+          );
+        } else if (type === "admin") {
+          return (
+            <center>
+              <Typography.Link
+                className="edit"
+                onClick={() => handleMedicineDispenseOperation(record)}
+              >
+                <span class="material-icons">healing</span>
+              </Typography.Link>
+            </center>
+          );
+        } else if (type === "admin2") {
+          return (
             <Typography.Link
               className="edit margin-right"
               onClick={() => handleMedicineEditoperation(record)}
             >
               <span class="material-icons">shopping_cart</span>
             </Typography.Link>
-
-            <Typography.Link
-              className="edit"
-              onClick={() => handleMedicineDispenseOperation(record)}
-            >
-              <span class="material-icons">healing</span>
-            </Typography.Link>
-          </center>
-        ) : (
-          <center>
-            <Typography.Link
-              className="edit"
-              onClick={() => handleMedicineDispenseOperation(record)}
-            >
-              <span class="material-icons">healing</span>
-            </Typography.Link>
-          </center>
-        );
+          );
+        }
       },
     },
   ];

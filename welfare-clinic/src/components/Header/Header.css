@@ -35,3 +35,7 @@
   font-size: 28px;
   color: gray;
 }
+
+.account-circle{
+  cursor: pointer;
+}

@@ -162,7 +162,11 @@ function Header({ loadInventory = (f) => f }) {
               add
             </span>
           ) : null,
-          <Dropdown overlay={menu} placement="bottomCenter">
+          <Dropdown
+            overlay={menu}
+            placement="bottomCenter"
+            className="account-circle"
+          >
             <span className="account-icon material-icons">account_circle</span>
           </Dropdown>,
         ]}
